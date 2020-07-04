@@ -15,20 +15,13 @@ fuck me mate
 #include "software_render.h"
 #include <stdlib.h>
 
-enum State {alive, dead};
-struct Automata
-{
-	Vec_2 location;
-	int age;
-	State current_state;
-	State next_state;
-};
 struct Set
 {
-	Vec_2 dimensions;
-	Vec_2 scale_factor;
-	R32 scale;
-	Automata** a;
+/*	N64 * current_state; //1 is alive, 0 is dead.
+	N64 * next_state;
+*/
+	N64* current_state;
+	N64* next_state;
 };
 
 struct Queue 
@@ -37,12 +30,7 @@ struct Queue
 	int Rear;
 	int Size; 
     int Capacity; 
-    Automata** Data; 
-};
-
-struct View
-{
-	void* foo;
+    void** Data; 
 };
 
 struct Program_State
@@ -52,9 +40,7 @@ struct Program_State
 	int counter;
 	int sim_speed;
 	bool pause;
-	
 };
-
 
 struct button_state
 {
@@ -146,11 +132,5 @@ void UpdateTransform(Program_State *State,
 					Vec_2 WindowInfo);
 void UpdateAndRender(Program_State *State,
 					RenderBuffer *Buffer,
-					User_Input *Input);
-Queue* CreateQueue(N32 Cap);
-void EnQueue(Queue *Q, Automata *Data);
-Automata* DeQueue(Queue* Q);
-Automata* GetFront(Queue* Q); 
-Automata* GetRear(Queue* Q);				
-
+					User_Input *Input);					
 #endif

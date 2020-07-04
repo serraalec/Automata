@@ -1,0 +1,1 @@
+About 5k ticks for graphics.  Need to reduce this before hashlife is implimented.

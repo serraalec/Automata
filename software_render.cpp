@@ -258,6 +258,82 @@ inline void draw_point_r32(R32 x, R32 y, RenderBuffer* buffer, ColorN32 *color)
 				   color);
 }
 
+
+void draw_2_tone_vec_2(Vec_2 v1,
+									Vec_2 v2,
+									RenderBuffer *buffer,
+									N64* texture,
+									N64 texture_size,
+									N64 array_pitch)
+{	
+	int x1 = (Z32) v1.I;
+	int x2 = (Z32) v2.I;
+	int y1 = (Z32) v1.J;
+	int y2 = (Z32) v2.J;
+	
+	
+	if(x1 > buffer->Width) x1 = buffer->Width;
+	if(y1 > buffer->Height) y1 = buffer->Height;
+	if(x1 < 0) x1 = 0;
+	if(y1 < 0) y1 = 0;
+	
+	if(x2 > buffer->Width) x2 = buffer->Width;
+	if(y2 > buffer->Height) y2 = buffer->Height;
+	if(x2 < 0) x2 = 0;
+	if(y2 < 0) y2 = 0;
+	
+	if(x1 > x2)
+	{
+		swap_z32(&x1, &x2);
+	}
+	if(y1 > y2)
+	{
+		swap_z32(&y1, &y2);
+	}
+	
+	N8 *EndOfbuffer = (N8 *)buffer->Memory + buffer->Pitch*buffer->Height;
+	N8  bit_counter = 0;
+	int array_x_index = 0;
+	int array_y_index = 0;
+	for(int X = x1;
+        X <= x2;
+        ++X)
+    {
+        N8 *Pixel = ((N8 *)buffer->Memory +
+                        X*buffer->BytesPerPixel +
+                        y1*buffer->Pitch);
+        for(int Y = y1;
+            Y <= y2;
+            ++Y)
+        {
+            if((Pixel >= buffer->Memory) &&
+               ((Pixel + 4) <= EndOfbuffer) &&
+			   X*Y <= texture_size)
+            {
+				//unsigned int so left shift is cooleo hooleo
+                *(N32 *)Pixel = (texture[array_y_index*array_pitch + array_x_index] & (1LLU << bit_counter)) >> bit_counter 
+					? 0xFFFFFFFF : 0x00000000;
+				//	(n & ( 1 << k )) >> k	<- kth bit of n
+				bit_counter++;
+				if(bit_counter == 64)
+				{
+					bit_counter = 0;
+					array_x_index++;
+					if(array_x_index > array_pitch)
+					{
+						array_x_index = 0;
+						array_y_index++;
+					}
+				}
+				
+            }
+
+            Pixel += buffer->Pitch;
+        }
+    }
+}
+
+
 void draw_rect_z32(Z32 x1, Z32 y1, Z32 x2, Z32 y2, RenderBuffer *buffer, ColorN32 *color)
 {		
 	if(x1 > buffer->Width) x1 = buffer->Width;

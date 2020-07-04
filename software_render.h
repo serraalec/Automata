@@ -63,6 +63,11 @@ inline void draw_point_n32(N32 x, N32 y, RenderBuffer* buffer, ColorN32 *color);
 inline void draw_point_r32(R32 x, R32 y, RenderBuffer* buffer, ColorN32 *color);
 void draw_rect_z32(Z32 x1, Z32 y1, Z32 x2, Z32 y2, RenderBuffer *buffer, ColorN32 *color);
 void draw_rect_vec_2(Vec_2 v1, Vec_2 v2, RenderBuffer *buffer, ColorN32 *color, void *texture);
-
+void draw_2_tone_vec_2(Vec_2 v1,
+									Vec_2 v2,
+									RenderBuffer *buffer,
+									N64* texture,
+									N64 texture_size,
+									N64 array_pitch);
 
 #endif

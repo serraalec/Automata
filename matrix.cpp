@@ -8,6 +8,11 @@
 
 #include "matrix.h"
 
+int ceiling(R32 in)
+{
+	return (int)(.5*in);
+}
+
 void mult_r32_vec_2(R32 a, Vec_2 &in)
 {
 	in.I *= a;
