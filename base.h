@@ -12,38 +12,36 @@ fuck me mate
 #define BASE_H
 #include "types.h"
 #include "matrix.h"
+
 #include "software_render.h"
 #include <stdlib.h>
 
-enum State {alive, dead};
-struct Automata
+enum State {alive, dead, miffed};
+
+
+struct Quad_Node
 {
-	Vec_2 location;
-	int age;
+	
+	int height;
+	Vec_2 position;
 	State current_state;
 	State next_state;
-};
-struct Set
+	
+	Quad_Node* north_west;
+	Quad_Node* north_east;
+	Quad_Node* south_west;
+	Quad_Node* south_east;
+	
+	Vec_2 top_left; 
+    Vec_2 bottom_right; 
+};	
+
+struct Quad_Tree
 {
-	Vec_2 dimensions;
-	Vec_2 scale_factor;
-	R32 scale;
-	Automata** a;
+	Quad_Node root;
+	int height;
 };
 
-struct Queue 
-{ 
-    int Front;
-	int Rear;
-	int Size; 
-    int Capacity; 
-    Automata** Data; 
-};
-
-struct View
-{
-	void* foo;
-};
 
 struct Program_State
 {
@@ -52,9 +50,7 @@ struct Program_State
 	int counter;
 	int sim_speed;
 	bool pause;
-	
 };
-
 
 struct button_state
 {
@@ -139,18 +135,10 @@ struct User_Input
 	Keyboard_Input Keyboard;
 	Mouse_Input Mouse;
 };
-inline Vec_2 RotatePosition(Vec_2 PositionToRotate,
-							Vec_2 OriginOfRotation, 
-							R32 Angle);
-void UpdateTransform(Program_State *State,
-					Vec_2 WindowInfo);
+
 void UpdateAndRender(Program_State *State,
 					RenderBuffer *Buffer,
 					User_Input *Input);
-Queue* CreateQueue(N32 Cap);
-void EnQueue(Queue *Q, Automata *Data);
-Automata* DeQueue(Queue* Q);
-Automata* GetFront(Queue* Q); 
-Automata* GetRear(Queue* Q);				
+
 
 #endif

@@ -57,7 +57,8 @@ struct Program_Memory
 	N64 PersistentFreeLocation;
 };
 
-struct Offscreen_Buffer{
+struct Offscreen_Buffer
+{
     BITMAPINFO Info;
     void * Memory;
     N16 Width;
@@ -65,6 +66,8 @@ struct Offscreen_Buffer{
     N16 Pitch;
 	Z64 BytesPerPixel;
 };
+
+
 
 void UpdateFramerateInfo(FrameRateInformation *Framerate);
 
